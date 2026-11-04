@@ -1,0 +1,41 @@
+test_arquivos_privados_nao_servidos (test_app.HTTPTest.test_arquivos_privados_nao_servidos) ... 127.0.0.1 - - [04/Nov/2026 18:39:25] "GET /api/painel HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:25] "GET /schema.sql HTTP/1.1" 404 -
+127.0.0.1 - - [04/Nov/2026 18:39:25] "GET /app.py HTTP/1.1" 404 -
+127.0.0.1 - - [04/Nov/2026 18:39:25] "GET /../models.py HTTP/1.1" 404 -
+ok
+test_fluxo_http (test_app.HTTPTest.test_fluxo_http) ... 127.0.0.1 - - [04/Nov/2026 18:39:26] "GET /api/painel HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "POST /api/alimentos HTTP/1.1" 201 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "POST /api/alimentos/1/movimentar HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "GET /api/painel HTTP/1.1" 200 -
+ok
+test_frontend_disponivel (test_app.HTTPTest.test_frontend_disponivel) ... 127.0.0.1 - - [04/Nov/2026 18:39:26] "GET /api/painel HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "GET /app.js HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:26] "GET /style.css HTTP/1.1" 200 -
+ok
+test_post_sem_token (test_app.HTTPTest.test_post_sem_token) ... 127.0.0.1 - - [04/Nov/2026 18:39:27] "GET /api/painel HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:27] "POST /api/alimentos HTTP/1.1" 403 -
+ok
+test_validacao_http (test_app.HTTPTest.test_validacao_http) ... 127.0.0.1 - - [04/Nov/2026 18:39:27] "GET /api/painel HTTP/1.1" 200 -
+127.0.0.1 - - [04/Nov/2026 18:39:27] "POST /api/alimentos HTTP/1.1" 400 -
+ok
+test_consumo_e_desperdicio (test_app.ModeloTest.test_consumo_e_desperdicio) ... ok
+test_datas_e_nome_invalidos (test_app.ModeloTest.test_datas_e_nome_invalidos) ... ok
+test_edicao_e_unidade (test_app.ModeloTest.test_edicao_e_unidade) ... ok
+test_esgotado (test_app.ModeloTest.test_esgotado) ... ok
+test_excesso_nao_altera_saldo_nem_historico (test_app.ModeloTest.test_excesso_nao_altera_saldo_nem_historico) ... ok
+test_item_inexistente (test_app.ModeloTest.test_item_inexistente) ... ok
+test_limites_validade (test_app.ModeloTest.test_limites_validade) ... ok
+test_motivo_obrigatorio (test_app.ModeloTest.test_motivo_obrigatorio) ... ok
+test_persistencia (test_app.ModeloTest.test_persistencia) ... ok
+test_quantidades_invalidas (test_app.ModeloTest.test_quantidades_invalidas) ... ok
+test_unidades_separadas (test_app.ModeloTest.test_unidades_separadas) ... ok
+test_invalid_json_object (test_wsgi.WSGITest.test_invalid_json_object) ... ok
+test_public_and_private_files (test_wsgi.WSGITest.test_public_and_private_files) ... ok
+test_token_required (test_wsgi.WSGITest.test_token_required) ... ok
+test_transaction_and_persistence (test_wsgi.WSGITest.test_transaction_and_persistence) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 3.095s
+
+OK
