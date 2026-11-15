@@ -55,7 +55,8 @@ class ModeloTest(unittest.TestCase):
         item=self.model.adicionar(alimento());data=alimento();data['nome']='Arroz integral';self.model.editar(item,data)
         self.assertEqual(self.model.painel()['alimentos'][0]['nome'],'Arroz integral')
         data['unidade']='L'
-        with self.assertRaises(ValueError):self.model.editar(item,data)
+        self.model.editar(item,data)
+        self.assertEqual(self.model.painel()['alimentos'][0]['unidade'],'L')
     def test_item_inexistente(self):
         with self.assertRaises(LookupError):self.model.movimentar(999,dict(tipo='consumo',quantidade=1))
     def test_unidades_separadas(self):
@@ -94,3 +95,4 @@ class HTTPTest(unittest.TestCase):
             with urlopen(self.base+path) as r:self.assertEqual(r.status,200);self.assertGreater(len(r.read()),100)
 
 if __name__=='__main__':unittest.main()
+

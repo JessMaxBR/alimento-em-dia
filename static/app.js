@@ -21,15 +21,17 @@ function render(){
   $('estoque').append(row);
  }
  $('resumo').replaceChildren();for(const [u,v] of Object.entries(state.resumo)){const row=document.createElement('tr');cell(row,u);cell(row,fmt(v.consumo));cell(row,fmt(v.desperdicio));$('resumo').append(row);}
+ $('ajustes').replaceChildren();$('sem-ajustes').hidden=(state.ajustes||[]).length>0;
+ for(const a of state.ajustes||[]){const row=document.createElement('tr');cell(row,dt(a.criado_em));cell(row,a.nome);cell(row,`${fmt(a.quantidade_anterior_mil)} ${a.unidade_anterior}`);cell(row,`${fmt(a.quantidade_nova_mil)} ${a.unidade_nova}`);$('ajustes').append(row);}
  $('historico').replaceChildren();$('sem-historico').hidden=state.movimentos.length>0;
  for(const m of state.movimentos){const row=document.createElement('tr');cell(row,dt(m.criado_em));cell(row,m.nome);cell(row,m.tipo==='consumo'?'Consumo':'Desperdício');cell(row,`${fmt(m.quantidade_mil)} ${m.unidade}`);cell(row,m.motivo||'—');$('historico').append(row);}
 }
 async function carregar(){const response=await fetch('/api/painel');if(!response.ok)throw new Error('Não foi possível carregar os dados. Verifique se o servidor está aberto.');state=await response.json();token=state.token;render();}
-function cadastro(item){const form=$('form-cadastro');form.reset();form.elements.id.value=item?item.id:'';form.elements.quantidade.disabled=!!item;form.elements.unidade.disabled=!!item;$('erro-cadastro').textContent='';$('titulo-cadastro').textContent=item?'Editar alimento':'Cadastrar alimento';if(item)for(const k of ['nome','categoria','local','unidade','validade'])form.elements[k].value=item[k];if(item)form.elements.quantidade.value=item.quantidade_mil/1000;$('cadastro').showModal();}
+function cadastro(item){const form=$('form-cadastro');form.reset();form.elements.id.value=item?item.id:'';form.elements.quantidade.disabled=false;form.elements.unidade.disabled=false;form.elements.quantidade.min=item?'0':'0.001';form.dataset.saldo=item?String(item.quantidade_mil):'';form.dataset.unidade=item?item.unidade:'';$('aviso-edicao').hidden=!item;$('erro-cadastro').textContent='';$('titulo-cadastro').textContent=item?'Editar alimento':'Cadastrar alimento';if(item)for(const k of ['nome','categoria','local','unidade','validade'])form.elements[k].value=item[k];if(item)form.elements.quantidade.value=item.quantidade_mil/1000;$('cadastro').showModal();}
 function syncMotivo(){const needed=$('tipo').value==='desperdicio';$('motivo-label').hidden=!needed;$('form-movimento').elements.motivo.required=needed;}
 function movimento(item){const form=$('form-movimento');form.reset();form.elements.id.value=item.id;form.elements.quantidade.max=item.quantidade_mil/1000;$('item-movimento').textContent=`${item.nome}: disponível ${fmt(item.quantidade_mil)} ${item.unidade}`;$('erro-movimento').textContent='';syncMotivo();$('movimento').showModal();}
 async function salvar(event, kind){event.preventDefault();const form=event.target, data=Object.fromEntries(new FormData(form));const button=form.querySelector('[type=submit]');const error=$('erro-'+kind);error.textContent='';button.disabled=true;
- try{let url='/api/alimentos';if(kind==='movimento')url+=`/${data.id}/movimentar`;else if(data.id){url+=`/${data.id}/editar`;data.unidade=form.elements.unidade.value;}
+ try{let url='/api/alimentos';if(kind==='movimento')url+=`/${data.id}/movimentar`;else if(data.id){url+=`/${data.id}/editar`;data.unidade=form.elements.unidade.value;data.quantidade_anterior_mil=form.dataset.saldo;data.unidade_anterior=form.dataset.unidade;}
  const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':token},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(result.erro||'Não foi possível salvar.');
  $(kind).close();$('mensagem').textContent='Registro salvo.';
  try{await carregar();}catch(e){$('mensagem').textContent='Registro salvo, mas a atualização da tela falhou. Recarregue a página antes de registrar novamente.';}
@@ -38,3 +40,4 @@ $('novo').addEventListener('click',()=>cadastro());$('busca').addEventListener('
 document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.close).close()));
 $('form-cadastro').addEventListener('submit',e=>salvar(e,'cadastro'));$('form-movimento').addEventListener('submit',e=>salvar(e,'movimento'));
 carregar().catch(e=>{$('mensagem').textContent=e.message;});
+

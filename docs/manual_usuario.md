@@ -10,7 +10,7 @@ Clique em Cadastrar alimento. Informe nome, categoria, local, quantidade positiv
 
 ## Consultar e editar
 
-Pesquise pelo nome e selecione a situação. A lista é ordenada por validade. Editar permite corrigir nome, categoria, local e data; unidade e quantidade ficam bloqueadas para preservar as movimentações. Não há exclusão nem estorno nesta versão.
+Pesquise pelo nome e selecione a situação. A lista é ordenada por validade. Editar permite corrigir nome, categoria, local, validade, quantidade atual e unidade. Informe o saldo que existe agora; não há conversão automática entre unidades. As saídas anteriores mantêm sua unidade original. Mudanças de saldo ou unidade aparecem em Histórico de correções, sem contar como consumo ou desperdício. Se outra pessoa alterar o saldo durante a edição, atualize a página e abra novamente o formulário. Não há exclusão nem estorno nesta versão.
 
 ## Registrar saída
 
